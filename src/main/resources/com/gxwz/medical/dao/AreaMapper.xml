@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxwz.medical.dao.AreaMapper">
+	<resultMap id="BaseResultMap"
+		type="com.gxwz.medical.entity.Area">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="cityno" jdbcType="VARCHAR" property="cityno" />
+		<result column="areaname" jdbcType="VARCHAR" property="areaname" />
+		<result column="level" jdbcType="VARCHAR" property="level" />
+		<result column="group" jdbcType="VARCHAR" property="group" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, cityno, areaname,level
+	</sql>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_area where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectByAll" resultMap="BaseResultMap"
+		parameterType="com.gxwz.medical.entity.Area">
+		select
+		<include refid="Base_Column_List" />
+		from t_area
+	</select>
+
+	<!-- 级联模糊查询 -->
+	<select id="selectByKeyWord"
+		parameterType="com.gxwz.medical.entity.Area" resultMap="BaseResultMap">
+		<!-- 设置字符串 -->
+
+		<if test="id != null">
+			<bind name="id" value="'%'+id+'%'" />
+		</if>
+		<if test="cityno != null">
+			<bind name="cityno" value="'%'+cityno+'%'" />
+		</if>
+		<if test="areaname != null">
+			<bind name="areaname" value="'%'+areaname+'%'" />
+		</if>
+		<if test="level != null">
+			<bind name="level" value="'%'+level+'%'" />
+		</if>
+		<if test="group != null">
+			<bind name="group" value="'%'+group+'%'" />
+		</if>
+		select
+		<!-- 引入级联SQL -->
+		<include refid="Base_Column_List"></include>
+
+		<!-- 动态设置查询条件 -->
+		from t_area where 1=1
+		<if test="id != null">
+			AND id = #{id,jdbcType=INTEGER}
+		</if>
+		<if test="cityno != null">
+			AND cityno LIKE #{cityno,jdbcType=VARCHAR}
+		</if>
+		<if test="areaname != null">
+			AND areaname LIKE #{areaname,jdbcType=VARCHAR}
+		</if>
+		<if test="level != null">
+			AND level LIKE #{level,jdbcType=VARCHAR}
+		</if>
+		<if test="level != null">
+			AND level LIKE #{level,jdbcType=VARCHAR}
+		</if>
+
+	</select>
+
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from t_area where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.gxwz.medical.entity.Area">
+
+		insert into t_area (id,cityno,
+		areaname,level)
+		values (#{id,jdbcType=INTEGER},
+		#{cityno,jdbcType=VARCHAR},
+		#{areaname,jdbcType=VARCHAR},
+		#{level,jdbcType=VARCHAR},)
+		#{level,jdbcType=VARCHAR},)
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.gxwz.medical.entity.Area">
+		insert into t_area
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">id,</if>
+			<if test="cityno != null">cityno,</if>
+			<if test="areaname != null">areaname,</if>
+			<if test="level != null">level,</if>
+			<if test="group != null">group,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=INTEGER},</if>
+			<if test="cityno != null">#{cityno,jdbcType=VARCHAR},</if>
+			<if test="areaname != null">#{areaname,jdbcType=VARCHAR},</if>
+			<if test="level != null">#{level,jdbcType=VARCHAR},</if>
+			<if test="group != null">#{group,jdbcType=VARCHAR},</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.gxwz.medical.entity.Area">
+		update t_area
+		<set>
+			<if test="cityno != null"> cityno = #{cityno,jdbcType=VARCHAR},</if>
+			<if test="areaname != null"> areaname = #{areaname,jdbcType=VARCHAR},</if>
+			<if test="level != null"> level = #{level,jdbcType=VARCHAR}, </if>
+			<if test="group != null"> group = #{group,jdbcType=VARCHAR}, </if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.gxwz.medical.entity.Area">
+		update t_area
+		<set>
+			cityno = #{cityno,jdbcType=VARCHAR},
+			areaname = #{areaname,jdbcType=VARCHAR},
+			level = #{level,jdbcType=VARCHAR},
+			group = #{group,jdbcType=VARCHAR}
+		</set>
+		where
+		id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

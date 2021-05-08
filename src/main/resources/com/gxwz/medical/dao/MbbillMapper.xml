@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxwz.medical.dao.MbbillMapper">
+	<resultMap id="BaseResultMap"
+		type="com.gxwz.medical.entity.Mbbill">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="cordno" jdbcType="VARCHAR" property="cordno" />
+		<result column="persname" jdbcType="VARCHAR"
+			property="persname" />
+		<result column="illname" jdbcType="VARCHAR" property="illname" />
+		<result column="startday" jdbcType="TIMESTAMP"
+			property="startday" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, cordno, persname, illname, startday
+	</sql>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_mbbill
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectByAll" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_mbbill
+	</select>
+
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from t_mbbill
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="com.gxwz.medical.entity.Mbbill">
+		insert into t_mbbill (id, cordno, persname,
+		illname,
+		startday)
+		values (#{id,jdbcType=INTEGER}, #{cordno,jdbcType=VARCHAR},
+		#{persname,jdbcType=VARCHAR},
+		#{illname,jdbcType=VARCHAR},
+		#{startday,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.gxwz.medical.entity.Mbbill">
+		insert into t_mbbill
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="cordno != null">
+				cordno,
+			</if>
+			<if test="persname != null">
+				persname,
+			</if>
+			<if test="illname != null">
+				illname,
+			</if>
+			<if test="startday != null">
+				startday,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="cordno != null">
+				#{cordno,jdbcType=VARCHAR},
+			</if>
+			<if test="persname != null">
+				#{persname,jdbcType=VARCHAR},
+			</if>
+			<if test="illname != null">
+				#{illname,jdbcType=VARCHAR},
+			</if>
+			<if test="startday != null">
+				#{startday,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.gxwz.medical.entity.Mbbill">
+		update t_mbbill
+		<set>
+			<if test="cordno != null">
+				cordno = #{cordno,jdbcType=VARCHAR},
+			</if>
+			<if test="persname != null">
+				persname = #{persname,jdbcType=VARCHAR},
+			</if>
+			<if test="illname != null">
+				illname = #{illname,jdbcType=VARCHAR},
+			</if>
+			<if test="startday != null">
+				startday = #{startday,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.gxwz.medical.entity.Mbbill">
+		update t_mbbill
+		set cordno = #{cordno,jdbcType=VARCHAR},
+		persname = #{persname,jdbcType=VARCHAR},
+		illname =
+		#{illname,jdbcType=VARCHAR},
+		startday = #{startday,jdbcType=TIMESTAMP}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

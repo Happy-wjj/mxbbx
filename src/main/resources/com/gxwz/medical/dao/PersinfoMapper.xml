@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxwz.medical.dao.PersinfoMapper">
+	<resultMap id="BaseResultMap"
+		type="com.gxwz.medical.entity.Persinfo">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<id column="familyid" jdbcType="INTEGER" property="familyid" />
+		<result column="cardno" jdbcType="VARCHAR" property="cardno" />
+		<result column="persname" jdbcType="VARCHAR"
+			property="persname" />
+		<result column="sex" jdbcType="VARCHAR" property="sex" />
+		<result column="age" jdbcType="VARCHAR" property="age" />
+		<result column="address" jdbcType="VARCHAR" property="address" />
+		<result column="tel" jdbcType="VARCHAR" property="tel" />
+		<result column="joinyear" jdbcType="VARCHAR"
+			property="joinyear" />
+		<result column="invnumber" jdbcType="VARCHAR"
+			property="invnumber" />
+		<result column="persnumber" jdbcType="VARCHAR"
+			property="persnumber" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, cardno, persname, sex, age, address, tel, joinyear,
+		invnumber,persnumber,familyid
+	</sql>
+
+	<!-- 检查用身份证号是否存在 -->
+	<select id="ValidateCardno"
+		parameterType="com.gxwz.medical.entity.Persinfo"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_persinfo
+		<!-- 动态设置查询条件 -->
+		where cardno = #{cardno,jdbcType=VARCHAR}
+
+	</select>
+
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_persinfo
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectByAll" resultMap="BaseResultMap"
+		parameterType="com.gxwz.medical.entity.Persinfo">
+		select
+		<include refid="Base_Column_List" />
+		from t_persinfo
+	</select>
+
+	<!-- 级联模糊查询 -->
+	<select id="selectByKeyWord"
+		parameterType="com.gxwz.medical.entity.Persinfo"
+		resultMap="BaseResultMap">
+		<!-- 设置字符串 -->
+
+		<if test="id != null">
+			<bind name="id" value="'%'+id+'%'" />
+		</if>
+		<if test="familyid != null">
+			<bind name="familyid" value="'%'+familyid+'%'" />
+		</if>
+		<if test="cardno != null">
+			<bind name="cardno" value="'%'+cardno+'%'" />
+		</if>
+		<if test="persname != null">
+			<bind name="persname" value="'%'+persname+'%'" />
+		</if>
+		<if test="sex != null">
+			<bind name="sex" value="'%'+sex+'%'" />
+		</if>
+		<if test="age != null">
+			<bind name="age" value="'%'+age+'%'" />
+		</if>
+		<if test="address != null">
+			<bind name="address" value="'%'+address+'%'" />
+		</if>
+		<if test="tel != null">
+			<bind name="tel" value="'%'+tel+'%'" />
+		</if>
+		<if test="joinyear != null">
+			<bind name="joinyear" value="'%'+joinyear+'%'" />
+		</if>
+		<if test="invnumber != null">
+			<bind name="invnumber" value="'%'+invnumber+'%'" />
+		</if>
+
+		<if test="persnumber != null">
+			<bind name="persnumber " value="'%'+persnumber +'%'" />
+		</if>
+
+		select
+		<!-- 引入级联SQL -->
+		<include refid="Base_Column_List"></include>
+
+		<!-- 动态设置查询条件 -->
+		from t_persinfo where 1=1
+		<if test="id != null">
+			AND id = #{id,jdbcType=INTEGER}
+		</if>
+		<if test="familyid != null">
+			AND familyid LIKE #{familyid,jdbcType=INTEGER}
+		</if>
+		<if test="cardno != null">
+			AND cardno LIKE #{cardno,jdbcType=VARCHAR}
+		</if>
+		<if test="persname != null">
+			AND persname LIKE #{persname,jdbcType=VARCHAR}
+		</if>
+		<if test="sex != null">
+			AND sex LIKE #{sex,jdbcType=VARCHAR}
+		</if>
+		<if test="age != null">
+			AND age LIKE #{age,jdbcType=INTEGER}
+		</if>
+		<if test="address != null">
+			AND address LIKE #{address,jdbcType=VARCHAR}
+		</if>
+		<if test="tel != null">
+			AND tel LIKE #{tel,jdbcType=VARCHAR}
+		</if>
+		<if test="joinyear!= null">
+			AND joinyear LIKE #{joinyear,jdbcType=VARCHAR}
+		</if>
+		<if test="invnumber != null">
+			AND invnumber LIKE #{invnumber,jdbcType=VARCHAR}
+		</if>
+		<if test="persnumber!= null">
+			AND persnumber LIKE #{persnumber,jdbcType=VARCHAR}
+		</if>
+	</select>
+
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from t_persinfo
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<delete id="deleteByfamilyid" parameterType="java.lang.Integer">
+		delete from
+		t_persinfo
+		where familyid = #{familyid,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insert"
+		parameterType="com.gxwz.medical.entity.Persinfo">
+		insert into t_persinfo (id,cardno, persname,
+		sex, age,
+		address,tel, joinyear, invnumber,persnumber,familyid,)
+		values(
+		#{id,jdbcType=VARCHAR},
+		#{cardno,jdbcType=VARCHAR},
+		#{persname,jdbcType=VARCHAR},
+		#{sex,jdbcType=VARCHAR},
+		#{age,jdbcType=VARCHAR},
+		#{address,jdbcType=VARCHAR},
+		#{tel,jdbcType=VARCHAR},
+		#{joinyear,jdbcType=VARCHAR},
+		#{invnumber,jdbcType=VARCHAR},
+		#{persnumber,jdbcType=VARCHAR}
+		#{familyid,jdbcType=INTEGER},)
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.gxwz.medical.entity.Persinfo">
+		insert into t_persinfo
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="familyid != null">
+				familyid,
+			</if>
+			<if test="cardno != null">
+				cardno,
+			</if>
+			<if test="persname != null">
+				persname,
+			</if>
+			<if test="sex != null">
+				sex,
+			</if>
+			<if test="age != null">
+				age,
+			</if>
+			<if test="address != null">
+				address,
+			</if>
+			<if test="tel != null">
+				tel,
+			</if>
+			<if test="joinyear != null">
+				joinyear,
+			</if>
+			<if test="invnumber != null">
+				invnumber,
+			</if>
+			<if test="persnumber != null">
+				persnumber,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="familyid != null">
+				#{familyid,jdbcType=INTEGER},
+			</if>
+			<if test="cardno != null">
+				#{cardno,jdbcType=VARCHAR},
+			</if>
+			<if test="persname != null">
+				#{persname,jdbcType=VARCHAR},
+			</if>
+			<if test="sex != null">
+				#{sex,jdbcType=VARCHAR},
+			</if>
+			<if test="age != null">
+				#{age,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="tel != null">
+				#{tel,jdbcType=VARCHAR},
+			</if>
+			<if test="joinyear != null">
+				#{joinyear,jdbcType=VARCHAR},
+			</if>
+			<if test="invnumber != null">
+				#{invnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="persnumber != null">
+				#{persnumber,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.gxwz.medical.entity.Persinfo">
+		update t_persinfo
+		<set>
+			<if test="familyid != null">
+				familyid = #{familyid,jdbcType=VARCHAR},
+			</if>
+			<if test="cardno != null">
+				cardno = #{cardno,jdbcType=VARCHAR},
+			</if>
+			<if test="persname != null">
+				persname = #{persname,jdbcType=VARCHAR},
+			</if>
+			<if test="sex != null">
+				sex = #{sex,jdbcType=VARCHAR},
+			</if>
+			<if test="age != null">
+				age = #{age,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				address = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="tel != null">
+				tel = #{tel,jdbcType=VARCHAR},
+			</if>
+			<if test="joinyear != null">
+				joinyear = #{joinyear,jdbcType=VARCHAR},
+			</if>
+			<if test="invnumber != null">
+				invnumber = #{invnumber,jdbcType=VARCHAR},
+			</if>
+			<if test="persnumber != null">
+				persnumber = #{persnumber,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.gxwz.medical.entity.Persinfo">
+		update t_persinfo
+		set familyid =
+		#{familyid,jdbcType=INTEGER},
+		cardno = #{cardno,jdbcType=VARCHAR},
+		persname = #{persname,jdbcType=VARCHAR},
+		sex = #{sex,jdbcType=VARCHAR},
+		age = #{age,jdbcType=INTEGER},
+		address = #{address,jdbcType=VARCHAR},
+		tel = #{tel,jdbcType=VARCHAR},
+		joinyear = #{joinyear,jdbcType=INTEGER},
+		invnumber = #{invnumber,jdbcType=VARCHAR},
+		persnumber =
+		#{persnumber,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

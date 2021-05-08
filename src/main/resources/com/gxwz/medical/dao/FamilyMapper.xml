@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxwz.medical.dao.FamilyMapper">
+	<resultMap id="BaseResultMap"
+		type="com.gxwz.medical.entity.Family">
+		<id column="fid" jdbcType="INTEGER" property="fid" />
+		<result column="countyno" jdbcType="VARCHAR"
+			property="countyno" />
+		<result column="townshipno" jdbcType="VARCHAR"
+			property="townshipno" />
+		<result column="groupno" jdbcType="VARCHAR" property="groupno" />
+		<result column="familyno" jdbcType="VARCHAR"
+			property="familyno" />
+		<result column="mastername" jdbcType="VARCHAR"
+			property="mastername" />
+		<result column="familynumber" jdbcType="VARCHAR"
+			property="familynumber" />
+		<result column="address" jdbcType="VARCHAR" property="address" />
+		<result column="tel" jdbcType="VARCHAR" property="tel" />
+		<result column="perid" jdbcType="INTEGER" property="perid" />
+		<result column="bind" jdbcType="VARCHAR" property="bind" />
+		<result column="perstate" jdbcType="INTEGER"
+			property="perstate" />
+		<result column="cardno" jdbcType="VARCHAR" property="cardno" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		fid, countyno,townshipno, groupno,familyno,
+		mastername,familynumber,
+		address, tel, perid,bind,perstate,cardno
+	</sql>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_family
+		where fid = #{fid,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectByAll" resultMap="BaseResultMap"
+		parameterType="com.gxwz.medical.entity.Family">
+		select
+		<include refid="Base_Column_List" />
+		from t_family
+	</select>
+
+	<!-- 级联模糊查询 -->
+	<select id="selectByKeyWord"
+		parameterType="com.gxwz.medical.entity.Family"
+		resultMap="BaseResultMap">
+		<!-- 设置字符串 -->
+
+		<if test="fid != null">
+			<bind name="fid" value="'%'+fid+'%'" />
+		</if>
+		<if test="countyno != null">
+			<bind name="countyno" value="'%'+countyno+'%'" />
+		</if>
+		<if test="townshipno != null">
+			<bind name="townshipno" value="'%'+townshipno+'%'" />
+		</if>
+		<if test="groupno != null">
+			<bind name="groupno" value="'%'+groupno+'%'" />
+		</if>
+		<if test="familyno != null">
+			<bind name="familyno" value="'%'+familyno+'%'" />
+		</if>
+		<if test="mastername != null">
+			<bind name="mastername" value="'%'+mastername+'%'" />
+		</if>
+		<if test="familynumber != null">
+			<bind name="familynumber" value="'%'familynumber'%'" />
+		</if>
+		<if test="address != null">
+			<bind name="address" value="'%'+address+'%'" />
+		</if>
+		<if test="tel != null">
+			<bind name="tel" value="'%'+tel+'%'" />
+		</if>
+		<if test="perid != null">
+			<bind name="perid" value="'%'+perid+'%'" />
+		</if>
+		<if test="bind != null">
+			<bind name="bind " value="'%'+bind +'%'" />
+		</if>
+		<if test="perstate != null">
+			<bind name="perstate " value="'%'+perstate +'%'" />
+		</if>
+		<if test="cardno != null">
+			<bind name="cardno " value="'%'+cardno +'%'" />
+		</if>
+
+		select
+		<!-- 引入级联SQL -->
+		<include refid="Base_Column_List"></include>
+
+		<!-- 动态设置查询条件 -->
+		from t_family where 1=1
+		<if test="fid != null">
+			AND fid = #{fid,jdbcType=INTEGER}
+		</if>
+		<if test="familyno != null">
+			AND familyno LIKE #{familyno,jdbcType=VARCHAR}
+		</if>
+		<if test="address != null">
+			AND address LIKE #{address,jdbcType=VARCHAR}
+		</if>
+		<if test="familynumber != null">
+			AND familynumber LIKE #{familynumber,jdbcType=VARCHAR}
+		</if>
+		<if test="mastername != null">
+			AND mastername LIKE #{mastername,jdbcType=VARCHAR}
+		</if>
+		<if test="countyno != null">
+			AND countyno LIKE #{countyno,jdbcType=VARCHAR}
+		</if>
+		<if test="townshipno != null">
+			AND townshipno LIKE #{townshipno,jdbcType=VARCHAR}
+		</if>
+		<if test="groupno != null">
+			AND groupno LIKE #{groupno,jdbcType=VARCHAR}
+		</if>
+		<if test="address != null">
+			AND address LIKE #{address,jdbcType=VARCHAR}
+		</if>
+		<if test="tel != null">
+			AND tel LIKE #{tel,jdbcType=VARCHAR}
+		</if>
+		<if test="bind != null">
+			AND bind LIKE #{bind,jdbcType=VARCHAR}
+		</if>
+		<if test="perstate != null">
+			AND perstate LIKE #{perstate,jdbcType=INTEGER}
+		</if>
+		<if test="cardno != null">
+			AND cardno LIKE #{cardno,jdbcType=VARCHAR}
+		</if>
+	</select>
+
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from t_family
+		where fid = #{fid,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="com.gxwz.medical.entity.Family">
+		insert into t_family (fid, familyno, perid,
+		familynumber, mastername, countyno,
+		townshipno, groupno, address,
+		tel,bind,perstate,cardno)
+		values (#{fid,jdbcType=INTEGER},
+		#{familyno,jdbcType=VARCHAR},
+		#{perid,jdbcType=INTEGER},
+		#{familynumber,jdbcType=VARCHAR}, #{mastername,jdbcType=VARCHAR},
+		#{countyno,jdbcType=VARCHAR},
+		#{townshipno,jdbcType=VARCHAR},
+		#{groupno,jdbcType=VARCHAR},
+		#{address,jdbcType=VARCHAR},
+		#{tel,jdbcType=VARCHAR},#{bind,jdbcType=VARCHAR},#{perstate,jdbcType=INTEGER},#{cardno,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.gxwz.medical.entity.Family">
+		insert into t_family
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="fid != null">
+				fid,
+			</if>
+			<if test="familyno != null">
+				familyno,
+			</if>
+			<if test="perid != null">
+				perid,
+			</if>
+			<if test="familynumber != null">
+				familynumber,
+			</if>
+			<if test="mastername != null">
+				mastername,
+			</if>
+			<if test="countyno != null">
+				countyno,
+			</if>
+			<if test="townshipno != null">
+				townshipno,
+			</if>
+			<if test="groupno != null">
+				groupno,
+			</if>
+			<if test="address != null">
+				address,
+			</if>
+			<if test="tel != null">
+				tel,
+			</if>
+			<if test="bind != null">
+				bind,
+			</if>
+			<if test="perstate != null">
+				perstate,
+			</if>
+			<if test="cardno != null">
+				cardno,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="fid != null">
+				#{fid,jdbcType=INTEGER},
+			</if>
+			<if test="familyno != null">
+				#{familyno,jdbcType=VARCHAR},
+			</if>
+			<if test="perid != null">
+				#{perid,jdbcType=INTEGER},
+			</if>
+			<if test="familynumber != null">
+				#{familynumber,jdbcType=VARCHAR},
+			</if>
+			<if test="mastername != null">
+				#{mastername,jdbcType=VARCHAR},
+			</if>
+			<if test="countyno != null">
+				#{countyno,jdbcType=VARCHAR},
+			</if>
+			<if test="townshipno != null">
+				#{townshipno,jdbcType=VARCHAR},
+			</if>
+			<if test="groupno != null">
+				#{groupno,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="tel != null">
+				#{tel,jdbcType=VARCHAR},
+			</if>
+			<if test="bind != null">
+				#{bind,jdbcType=VARCHAR},
+			</if>
+			<if test="perstate != null">
+				#{perstate,jdbcType=INTEGER},
+			</if>
+			<if test="cardno != null">
+				#{cardno,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.gxwz.medical.entity.Family">
+		update t_family
+		<set>
+			<if test="familyno != null">
+				familyno = #{familyno,jdbcType=VARCHAR},
+			</if>
+			<if test="perid != null">
+				perid = #{perid,jdbcType=INTEGER},
+			</if>
+			<if test="familynumber != null">
+				familynumber = #{familynumber,jdbcType=VARCHAR},
+			</if>
+			<if test="mastername != null">
+				mastername = #{mastername,jdbcType=VARCHAR},
+			</if>
+			<if test="countyno != null">
+				countyno = #{countyno,jdbcType=VARCHAR},
+			</if>
+			<if test="townshipno != null">
+				townshipno = #{townshipno,jdbcType=VARCHAR},
+			</if>
+			<if test="groupno != null">
+				groupno = #{groupno,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				address = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="tel != null">
+				tel = #{tel,jdbcType=VARCHAR},
+			</if>
+			<if test="bind != null">
+				tel = #{bind,jdbcType=VARCHAR},
+			</if>
+			<if test="perstate != null">
+				perstate = #{perstate,jdbcType=INTEGER},
+			</if>
+			<if test="cardno!= null">
+				tel = #{cardno,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where fid = #{fid,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.gxwz.medical.entity.Family">
+		update t_family
+		set familyno =
+		#{familyno,jdbcType=VARCHAR},
+		perid = #{perid,jdbcType=INTEGER},
+		familynumber = #{familynumber,jdbcType=VARCHAR},
+		mastername =
+		#{mastername,jdbcType=VARCHAR},
+		countyno =
+		#{countyno,jdbcType=VARCHAR},
+		townshipno =
+		#{townshipno,jdbcType=VARCHAR},
+		groupno = #{groupno,jdbcType=VARCHAR},
+		address = #{address,jdbcType=VARCHAR},
+		tel = #{tel,jdbcType=VARCHAR},
+		bind = #{bind,jdbcType=VARCHAR},
+		perstate =
+		#{perstate,jdbcType=INTEGER},
+		cardno = #{cardno,jdbcType=VARCHAR}
+		where
+		fid = #{fid,jdbcType=INTEGER}
+	</update>
+</mapper>

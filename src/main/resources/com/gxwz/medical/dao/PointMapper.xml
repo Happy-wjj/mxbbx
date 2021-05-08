@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxwz.medical.dao.PointMapper">
+	<resultMap id="BaseResultMap"
+		type="com.gxwz.medical.entity.Point">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="pointno" jdbcType="VARCHAR" property="pointno" />
+		<result column="agencyno" jdbcType="VARCHAR"
+			property="agencyno" />
+		<result column="agencyname" jdbcType="VARCHAR"
+			property="agencyname" />
+		<result column="pointname" jdbcType="VARCHAR"
+			property="pointname" />
+		<result column="level" jdbcType="INTEGER" property="level" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, pointno, agencyno, agencyname, pointname, level
+	</sql>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_point
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectByAll" resultMap="BaseResultMap"
+		parameterType="com.gxwz.medical.entity.Point">
+		select
+		<include refid="Base_Column_List" />
+		from t_point
+	</select>
+
+	<!-- 级联模糊查询 -->
+	<select id="selectByKeyWord"
+		parameterType="com.gxwz.medical.entity.Point"
+		resultMap="BaseResultMap">
+		<!-- 设置字符串 -->
+		<if test="id != null">
+			<bind name="id" value="'%'+id+'%'" />
+		</if>
+		<if test="pointno != null">
+			<bind name="pointno" value="'%'+pointno+'%'" />
+		</if>
+		<if test="agencyno != null">
+			<bind name="agencyno" value="'%'+agencyno+'%'" />
+		</if>
+		<if test="agencyname != null">
+			<bind name="agencyname" value="'%'+agencyname+'%'" />
+		</if>
+		<if test="pointname != null">
+			<bind name="pointname" value="'%'+pointname+'%'" />
+		</if>
+		<if test="level != null">
+			<bind name="level" value="'%'+level+'%'" />
+		</if>
+
+		select
+		<!-- 引入级联SQL -->
+		<include refid="Base_Column_List"></include>
+
+		<!-- 动态设置查询条件 -->
+		from t_point where 1=1
+		<if test="id != null">
+			AND id = #{id,jdbcType=INTEGER}
+		</if>
+		<if test="pointno != null">
+			AND pointno LIKE #{pointno,jdbcType=VARCHAR}
+		</if>
+		<if test="agencyno != null">
+			AND agencyno LIKE #{agencyno,jdbcType=VARCHAR}
+		</if>
+		<if test="agencyname != null">
+			AND agencyname LIKE #{agencyname,jdbcType=VARCHAR}
+		</if>
+		<if test="pointname != null">
+			AND pointname LIKE #{pointname,jdbcType=VARCHAR}
+		</if>
+		<if test="level != null">
+			AND level LIKE #{level,jdbcType=INTEGER}
+		</if>
+	</select>
+
+
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from t_point
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="com.gxwz.medical.entity.Point">
+		insert into t_point (id, pointno, agencyno, agencyname,
+		pointname, level)
+		values (#{id,jdbcType=INTEGER},
+		#{pointno,jdbcType=VARCHAR},
+		#{agencyno,jdbcType=VARCHAR},
+		#{agencyname,jdbcType=VARCHAR}, #{pointname,jdbcType=VARCHAR},
+		#{level,jdbcType=INTEGER}
+		)
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.gxwz.medical.entity.Point">
+		insert into t_point
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="pointno != null">
+				pointno,
+			</if>
+			<if test="agencyno != null">
+				agencyno,
+			</if>
+			<if test="agencyname != null">
+				agencyname,
+			</if>
+			<if test="pointname != null">
+				pointname,
+			</if>
+			<if test="level != null">
+				level,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="pointno != null">
+				#{pointno,jdbcType=VARCHAR},
+			</if>
+			<if test="agencyno != null">
+				#{agencyno,jdbcType=VARCHAR},
+			</if>
+			<if test="agencyname != null">
+				#{agencyname,jdbcType=VARCHAR},
+			</if>
+			<if test="pointname != null">
+				#{pointname,jdbcType=VARCHAR},
+			</if>
+			<if test="level != null">
+				#{level,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.gxwz.medical.entity.Point">
+		update t_point
+		<set>
+			<if test="pointno != null">
+				pointno = #{pointno,jdbcType=VARCHAR},
+			</if>
+			<if test="agencyno != null">
+				agencyno = #{agencyno,jdbcType=VARCHAR},
+			</if>
+			<if test="agencyname != null">
+				agencyname = #{agencyname,jdbcType=VARCHAR},
+			</if>
+			<if test="pointname != null">
+				pointname = #{pointname,jdbcType=VARCHAR},
+			</if>
+			<if test="level != null">
+				level = #{level,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.gxwz.medical.entity.Point">
+		update t_point
+		set pointno = #{pointno,jdbcType=VARCHAR},
+		agencyno = #{agencyno,jdbcType=VARCHAR},
+		agencyname =
+		#{agencyname,jdbcType=VARCHAR},
+		pointname =
+		#{pointname,jdbcType=VARCHAR},
+		level = #{level,jdbcType=INTEGER}
+		where
+		id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

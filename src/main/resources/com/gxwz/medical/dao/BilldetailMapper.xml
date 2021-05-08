@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxwz.medical.dao.BilldetailMapper">
+	<resultMap id="BaseResultMap"
+		type="com.gxwz.medical.entity.Billdetail">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="billno" jdbcType="VARCHAR" property="billno" />
+		<result column="mbno" jdbcType="VARCHAR" property="mbno" />
+		<result column="cardno" jdbcType="VARCHAR" property="cardno" />
+		<result column="allcost" jdbcType="DECIMAL" property="allcost" />
+		<result column="bxpay" jdbcType="DECIMAL" property="bxpay" />
+		<result column="treattime" jdbcType="TIMESTAMP"
+			property="treattime" />
+		<result column="recordtime" jdbcType="TIMESTAMP"
+			property="recordtime" />
+		<result column="treatinno" jdbcType="VARCHAR"
+			property="treatinno" />
+		<result column="treatagenname" jdbcType="VARCHAR"
+			property="treatagenname" />
+		<result column="userid" jdbcType="VARCHAR" property="userid" />
+		<result column="fid" jdbcType="INTEGER" property="fid" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, billno, mbno, cardno, allcost, bxpay, treattime,
+		recordtime,
+		treatagenname, treatagenname,
+		userid,fid
+	</sql>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_billdetail
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<!-- 检查用身份证号是否存在 -->
+	<select id="ValidateCardno"
+		parameterType="com.gxwz.medical.entity.Billdetail"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_billdetail
+		<!-- 动态设置查询条件 -->
+		where cardno = #{cardno,jdbcType=VARCHAR}
+
+	</select>
+
+	<select id="selectByAll" resultMap="BaseResultMap"
+		parameterType="com.gxwz.medical.entity.Billdetail">
+		select
+		<include refid="Base_Column_List" />
+		from t_billdetail
+	</select>
+
+	<!-- 级联模糊查询 -->
+	<select id="selectByKeyWord"
+		parameterType="com.gxwz.medical.entity.Billdetail"
+		resultMap="BaseResultMap">
+		<!-- 设置字符串 -->
+
+		<if test="id != null">
+			<bind name="id" value="'%'+id+'%'" />
+		</if>
+		<if test="billno != null">
+			<bind name="billno" value="'%'+billno+'%'" />
+		</if>
+		<if test="mbno != null">
+			<bind name="mbno" value="'%'+mbno+'%'" />
+		</if>
+		<if test="cardno != null">
+			<bind name="cardno" value="'%'+cardno+'%'" />
+		</if>
+		<if test="allcost != null">
+			<bind name="allcost" value="'%'+allcost+'%'" />
+		</if>
+		<if test="bxpay != null">
+			<bind name="bxpay" value="'%'+bxpay+'%'" />
+		</if>
+		<if test="treattime != null">
+			<bind name="treattime" value="'%'+treattime+'%'" />
+		</if>
+		<if test="recordtime != null">
+			<bind name="recordtime" value="'%'+recordtime+'%'" />
+		</if>
+		<if test="treatinno != null">
+			<bind name="treatinno" value="'%'+treatinno+'%'" />
+		</if>
+		<if test="treatagenname != null">
+			<bind name="treatagenname" value="'%'+treatagenname+'%'" />
+		</if>
+		<if test="userid != null">
+			<bind name="userid " value="'%'+userid +'%'" />
+		</if>
+		<if test="fid != null">
+			<bind name="fid" value="'%'+fid+'%'" />
+		</if>
+		select
+		<!-- 引入级联SQL -->
+		<include refid="Base_Column_List"></include>
+
+		<!-- 动态设置查询条件 -->
+		from t_billdetail where 1=1
+		<if test="id != null">
+			AND id = #{id,jdbcType=INTEGER}
+		</if>
+		<if test="billno != null">
+			AND billno LIKE #{billno,jdbcType=VARCHAR}
+		</if>
+		<if test="mbno != null">
+			AND mbno LIKE #{mbno,jdbcType=VARCHAR}
+		</if>
+		<if test="cardno != null">
+			AND cardno LIKE #{cardno,jdbcType=VARCHAR}
+		</if>
+		<if test="allcost != null">
+			AND allcost LIKE #{allcost,jdbcType=DECIMAL}
+		</if>
+		<if test="bxpay != null">
+			AND bxpay LIKE #{bxpay,jdbcType=DECIMAL}
+		</if>
+		<if test="treattime != null">
+			AND treattime LIKE #{treattime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="recordtime != null">
+			AND recordtime LIKE #{recordtime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="treatinno != null">
+			AND treatinno LIKE #{treatinno,jdbcType=VARCHAR}
+		</if>
+		<if test="treatagenname != null">
+			AND treatagenname LIKE #{treatagenname,jdbcType=VARCHAR}
+		</if>
+		<if test="userid != null">
+			AND userid LIKE #{userid,jdbcType=VARCHAR}
+		</if>
+		<if test="fid != null">
+			AND fid = #{fid,jdbcType=INTEGER}
+		</if>
+	</select>
+
+
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from t_billdetail
+		where id =
+		#{id,jdbcType=INTEGER}
+	</delete>
+
+	<delete id="deleteBilldetailfid"
+		parameterType="java.lang.Integer">
+		delete from t_billdetail
+		where fid =
+		#{fid,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insert"
+		parameterType="com.gxwz.medical.entity.Billdetail">
+		insert into t_billdetail (id, billno, mbno,
+		cardno,
+		allcost, bxpay,
+		treattime, recordtime, treatinno,
+		treatagenname,
+		userid,fid)
+		values (#{id,jdbcType=INTEGER}, #{billno,jdbcType=VARCHAR},
+		#{mbno,jdbcType=VARCHAR},
+		#{cardno,jdbcType=VARCHAR},
+		#{allcost,jdbcType=DECIMAL}, #{bxpay,jdbcType=DECIMAL},
+		#{treattime,jdbcType=TIMESTAMP}, #{recordtime,jdbcType=TIMESTAMP},
+		#{treatinno,jdbcType=VARCHAR},
+		#{treatagenname,jdbcType=VARCHAR},
+		#{userid,jdbcType=VARCHAR},#{fid,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.gxwz.medical.entity.Billdetail">
+		insert into t_billdetail
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="billno != null">
+				billno,
+			</if>
+			<if test="mbno != null">
+				mbno,
+			</if>
+			<if test="cardno != null">
+				cardno,
+			</if>
+			<if test="allcost != null">
+				allcost,
+			</if>
+			<if test="bxpay != null">
+				bxpay,
+			</if>
+			<if test="treattime != null">
+				treattime,
+			</if>
+			<if test="recordtime != null">
+				recordtime,
+			</if>
+			<if test="treatinno != null">
+				treatinno,
+			</if>
+			<if test="treatagenname != null">
+				treatagenname,
+			</if>
+			<if test="userid != null">
+				userid,
+			</if>
+			<if test="fid != null">
+				fid,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="billno != null">
+				#{billno,jdbcType=VARCHAR},
+			</if>
+			<if test="mbno != null">
+				#{mbno,jdbcType=VARCHAR},
+			</if>
+			<if test="cardno != null">
+				#{cardno,jdbcType=VARCHAR},
+			</if>
+			<if test="allcost != null">
+				#{allcost,jdbcType=DECIMAL},
+			</if>
+			<if test="bxpay != null">
+				#{bxpay,jdbcType=DECIMAL},
+			</if>
+			<if test="treattime != null">
+				#{treattime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="recordtime != null">
+				#{recordtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="treatinno != null">
+				#{treatinno,jdbcType=VARCHAR},
+			</if>
+			<if test="treatagenname != null">
+				#{treatagenname,jdbcType=VARCHAR},
+			</if>
+			<if test="userid != null">
+				#{userid,jdbcType=VARCHAR},
+			</if>
+			<if test="fid != null">
+				#{fid,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.gxwz.medical.entity.Billdetail">
+		update t_billdetail
+		<set>
+			<if test="billno != null">
+				billno = #{billno,jdbcType=VARCHAR},
+			</if>
+			<if test="mbno != null">
+				mbno = #{mbno,jdbcType=VARCHAR},
+			</if>
+			<if test="cardno != null">
+				cardno = #{cardno,jdbcType=VARCHAR},
+			</if>
+			<if test="allcost != null">
+				allcost = #{allcost,jdbcType=DECIMAL},
+			</if>
+			<if test="bxpay != null">
+				bxpay = #{bxpay,jdbcType=DECIMAL},
+			</if>
+			<if test="treattime != null">
+				treattime = #{treattime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="recordtime != null">
+				recordtime = #{recordtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="treatinno != null">
+				treatinno = #{treatinno,jdbcType=VARCHAR},
+			</if>
+			<if test="treatagenname != null">
+				treatagenname = #{treatagenname,jdbcType=VARCHAR},
+			</if>
+			<if test="userid != null">
+				userid = #{userid,jdbcType=VARCHAR},
+			</if>
+			<if test="fid != null">
+				fid = #{fid,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.gxwz.medical.entity.Billdetail">
+		update t_billdetail
+		set billno =
+		#{billno,jdbcType=VARCHAR},
+		mbno = #{mbno,jdbcType=VARCHAR},
+		cardno =
+		#{cardno,jdbcType=VARCHAR},
+		allcost = #{allcost,jdbcType=DECIMAL},
+		bxpay = #{bxpay,jdbcType=DECIMAL},
+		treattime =
+		#{treattime,jdbcType=TIMESTAMP},
+		recordtime =
+		#{recordtime,jdbcType=TIMESTAMP},
+		treatinno =
+		#{treatinno,jdbcType=VARCHAR},
+		treatagenname =
+		#{treatagenname,jdbcType=VARCHAR},
+		userid = #{userid,jdbcType=VARCHAR},
+		fid = #{fid,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>
